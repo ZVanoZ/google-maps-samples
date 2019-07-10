@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #toppanel{
+            height: 50px;
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+<body>
+<div id="toppanel"></div>
+<div id="map"></div>
+<script>
+	function initMap() {
+		console.log('initMap');
+		try{
+			AppInitMap();
+			//document.AppInitMap();
+        }catch (e){
+			console.log('Ошибка!', e);
+        }
+	}
+</script>
+
+<script src="define.js"></script>
+<script src="initMap1.js"></script>
+<script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUXXZ1L8VxjfdjKf3x8TVDbATUAQCRfPg&callback=initMap"
+></script>
+
+</body>
+</html>
