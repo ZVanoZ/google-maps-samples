@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #toppanel {
+            height: 50px;
+            border: 1px solid blue;
+        }
+
+        #map, #log {
+            display: inline-block;
+            padding: 10px;
+            height: calc(100vh - 50px);
+            width: calc(50% - 5px);
+            border: 1px dashed coral;
+        }
+        #log{
+            float: right;
+            overflow: auto;
+        }
+
+    </style>
+</head>
+<body>
+<div id="toppanel">
+    <span><label for="lat">lat<input id="lat" type="text" name="lat"></label></span>
+    <span><label for="lng">lng<input id="lng" type="text" name="lng"></label></span>
+    <span><button id="buttonMarkerAdd">Добавить метку</button></span>
+</div>
+<div id="map-conainer">
+    <span id="map"></span>
+    <span id="log"></span>
+</div>
+<script>
+	function initMap() {
+		console.log('initMap');
+		try {
+			AppInitMap();
+			//document.AppInitMap();
+		} catch (e) {
+			console.log('Ошибка!', e);
+		}
+	}
+</script>
+
+<script src="../define.js"></script>
+<script src="initMap.js"></script>
+<script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUXXZ1L8VxjfdjKf3x8TVDbATUAQCRfPg&callback=initMap"
+></script>
+
+</body>
+</html>
