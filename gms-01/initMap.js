@@ -2,6 +2,7 @@
 
 var map;
 let markersMap = new Map();
+let activeMarker = undefined;
 const initialMarkersInfo = new Map([
 	['marker1id', {
 		//myId: 'marker1id',
@@ -50,21 +51,21 @@ const AppInitMap = () => {
 		addMarker(id, item.position, item.title, item.icon)
 	});
 
-	let marker = new google.maps.Marker({
-		//position: map.getCenter(),
-		position: {
-			lat: 47.907768,
-			lng: 33.281946
-		},
-		icon: {
-			size: new google.maps.Size(220, 220),
-			scaledSize: new google.maps.Size(16, 16),
-			origin: new google.maps.Point(0, 0),
-			url: document.AppData.dataUrl.url_0,
-			anchor: new google.maps.Point(16, 16)
-		},
-		map: map
-	});
+	// let marker = new google.maps.Marker({
+	// 	//position: map.getCenter(),
+	// 	position: {
+	// 		lat: 47.907768,
+	// 		lng: 33.281946
+	// 	},
+	// 	icon: {
+	// 		size: new google.maps.Size(220, 220),
+	// 		scaledSize: new google.maps.Size(16, 16),
+	// 		origin: new google.maps.Point(0, 0),
+	// 		url: document.AppData.dataUrl.url_0,
+	// 		anchor: new google.maps.Point(16, 16)
+	// 	},
+	// 	map: map
+	// });
 };
 
 document.getElementById('buttonMarkerAdd').addEventListener('click', (event) => {
@@ -78,6 +79,10 @@ document.getElementById('buttonMarkerAdd').addEventListener('click', (event) => 
 
 function addMarker(id, position, title, icon) {
 	let marker = new google.maps.Marker({
+		metadata : {
+			id : id,
+			icon : icon
+		},
 		myId: id,
 		map: map,
 		position: position,
@@ -89,16 +94,27 @@ function addMarker(id, position, title, icon) {
 	});
 	marker.set('myId', id);
 	marker.addListener('click', function (event) {
-		add2log('marker/click/' + marker.get('myId'));
+		if (activeMarker){
+			activeMarker.setIcon(activeMarker.get('metadata').icon);
+		}
+		activeMarker = markersMap.get(marker.get('myId'));
+		add2log('marker/click/id=' + activeMarker.get('myId'));
 		console.log('marker/click', {
 			arguments: arguments,
-			myId: marker.get('myId'),
+			myId: activeMarker.get('myId'),
 			target: event.target,
-			marker: markersMap.get(marker.get('myId'))
+			marker: activeMarker
+		});
+		marker.setIcon({
+			url : '../img/marker-active.png',
+			scaledSize: new google.maps.Size(32, 32),
 		});
 	});
 	markersMap.set(id, marker);
-	add2log('addMarker/Добавлена метка/' + id + '/' + position.lat + ';' + position.lng);
+	add2log('addMarker/Добавлена метка/' + id + '/'
+		+ ('function' === typeof(position.lat) ? position.lat() : position.lat) + ';'
+		+ ('function' === typeof(position.lng) ? position.lng() : position.lng) + ';'
+	);
 }
 
 const add2log = (data) => {
